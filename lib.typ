@@ -1,6 +1,6 @@
 // This function gets your whole document as its `body` and formats
-// it as an article in the style of the IEEE.
-#let ieee(
+// it as an article in the style of the TVCG.
+#let tvcg(
   // The paper's title.
   title: [Paper Title],
 

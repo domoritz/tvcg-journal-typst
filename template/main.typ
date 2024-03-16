@@ -1,6 +1,6 @@
 #import "./lib.typ": *
 
-#show: ieee.with(
+#show: tvcg.with(
   title: [Global Illumination for Fun and Profit],
   abstract: [
     #lorem(150)
