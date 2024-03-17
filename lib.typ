@@ -1,3 +1,6 @@
+// Workaround for the lack of an `std` scope.
+#let std-bibliography = bibliography
+
 // This function gets your whole document as its `body` and formats
 // it as an article in the style of the TVCG.
 #let tvcg(
@@ -21,9 +24,8 @@
   // The article's paper size. Also affects the margins.
   paper-size: "us-letter",
 
-  // The path to a bibliography file if you want to cite some external
-  // works.
-  bibliography-file: none,
+  // The result of a call to the `bibliography` function or `none`.
+  bibliography: none,
 
   // The paper's content.
   body
@@ -138,7 +140,7 @@
     text(10pt, font: "Liberation Sans", authors.map(author => {
         author.name
         if "orcid" in author and author.orcid != "" {
-          link("https://orcid.org/" + author.orcid)[#box(height: 1.1em, baseline: 13.5%)[#image("fig/orcid.svg")]]
+          link("https://orcid.org/" + author.orcid)[#box(height: 1.1em, baseline: 13.5%)[#image("assets/orcid.svg")]]
         }
       } ).join(", ", last: and-comma)
     )
@@ -148,7 +150,7 @@
 
   // Insert teaser image
   [#figure(
-      image(teaser.path),
+      teaser.image,
       caption: teaser.caption,
     ) <teaser>
   ]
@@ -169,7 +171,7 @@
   }
 
   v(10pt, weak: true)
-  align(center, box(width: 40%)[#image("fig/diamondrule.svg")])
+  align(center, box(width: 40%)[#image("assets/diamondrule.svg")])
   v(15pt, weak: true)
 
   // Start two column mode and configure paragraph properties.
@@ -202,8 +204,9 @@
   body
 
   // Display bibliography.
-  if bibliography-file != none {
-    show bibliography: set text(8pt)
-    bibliography(bibliography-file, title: text(10pt)[References], style: "ieee")
+  if bibliography != none {
+    show std-bibliography: set text(8pt)
+    set std-bibliography(title: text(10pt)[References], style: "ieee")
+    bibliography
   }
 }

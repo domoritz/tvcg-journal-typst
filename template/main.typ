@@ -1,4 +1,4 @@
-#import "./lib.typ": *
+#import "@preview/tvcg-journal:0.0.1": tvcg
 
 #show: tvcg.with(
   title: [Global Illumination for Fun and Profit],
@@ -24,11 +24,11 @@
     ),
   ),
   teaser: (
-    path: "fig/CypressView.jpg",
+    image: image("figs/CypressView.jpg"),
     caption: "Test caption"
-          ),
+  ),
   index-terms: ("Radiosity", "Global Illumination", "Constant Time"),
-  bibliography-file: "refs.bib",
+  bibliography: bibliography("refs.bib"),
 )
 
 = The Quick Brown Fox Jumps Over the Lazy Dog
@@ -77,12 +77,12 @@ $ a + b = gamma $
 #lorem(50)
 
 #figure(
-  image("fig/CypressView.jpg"),
+  image("figs/CypressView.jpg"),
   caption: "caption",
   )
 #figure(
   grid(columns: 2, row-gutter: 2mm, column-gutter: 1mm,
-  image("fig/CypressView.jpg"), align(horizon)[#image("fig/diamondrule.svg")]),
+  image("figs/CypressView.jpg"), align(horizon)[#image("figs/CypressView.jpg")]),
 
   caption: "Caption"
 
