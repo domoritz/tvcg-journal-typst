@@ -1,6 +1,6 @@
 # tvcg-journal-typst
 
-A Typst template for TVCG journals. This is work in progress and not yet ready. This project was started by Matěj Lang at https://typst.app/project/pdh8Qj4vO7tfB1oiWoHuez. Please help us finish it to look as close as possible to the [LaTeX template](https://github.com/ieeevgtc/tvcg-journal-latex).
+A [Typst](https://typst.app) template for TVCG journals. This is work in progress and not yet ready. This project was started by Matěj Lang at https://typst.app/project/pdh8Qj4vO7tfB1oiWoHuez. Please help us finish it to look as close as possible to the [LaTeX template](https://github.com/ieeevgtc/tvcg-journal-latex).
 
 ## Development
 
