@@ -26,7 +26,7 @@
     ),
   ),
   teaser: (
-    image: image("figs/CypressView.jpg"),
+    image: image("figs/CypressView.jpg", alt: "A view of a city with buildings peeking out of the clouds."),
     caption: "In the Clouds: Vancouver from Cypress Mountain. Note that the teaser may not be wider than the abstract block."
   ),
   index-terms: ("Radiosity", "Global Illumination", "Constant Time"),
@@ -52,13 +52,16 @@ Links are automatically shown for URLs but you can customize the name of the lin
 
 Typst automatically detects the type of figure (i.e., table, image, or code) and label them accordingly. Figures are documented at https://typst.app/docs/reference/model/figure/.
 
+for figures with images, the image format is usually detected automatically. For details, head over to the image documentation: https://typst.app/docs/reference/visualize/image/.
+
 #figure(
-  image("figs/CypressView.jpg"),
-  caption: "caption",
+  image("figs/CypressView.jpg", alt: "A view of a city with buildings peeking out of the clouds."),
+  caption: "Caption",
   )
 #figure(
   grid(columns: 2, row-gutter: 2mm, column-gutter: 1mm,
-  image("figs/CypressView.jpg"), align(horizon)[#image("figs/CypressView.jpg")]),
+  image("figs/CypressView.jpg", alt: "A view of a city with buildings peeking out of the clouds."),
+  align(horizon)[#image("figs/CypressView.jpg", alt: "A view of a city with buildings peeking out of the clouds.")]),
   caption: "Caption"
 )
 
@@ -72,6 +75,10 @@ They will look much nicer and crisper and any text in them will be more selectab
 Of the raster graphics formats, screenshots of user interfaces and text, as well as line art, are better shown with png.
 jpg is better for photographs.
 Make sure all raster graphics are captured in high enough resolution so they look crisp and scale well.
+
+== Alternative texts
+
+Always include an alternative text that describes the image. The alt text should not be the same as the caption, but should describe the image in a way that makes sense when the image is not visible.
 
 == Figures on the first page
 
