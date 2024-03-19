@@ -1,6 +1,9 @@
 // Workaround for the lack of an `std` scope.
 #let std-bibliography = bibliography
 
+#let serif-font = "Liberation Serif"
+#let sans-serif-font = "Liberation Sans"
+
 // This function gets your whole document as its `body` and formats
 // it as an article in the style of the TVCG.
 #let tvcg(
@@ -34,7 +37,7 @@
   set document(title: title, author: authors.map(author => author.name))
 
   // Set the body font.
-  set text(font: "Liberation Sans", size: 9pt)
+  set text(font: sans-serif-font, size: 9pt)
 
   // Configure the page.
   set page(
@@ -82,7 +85,7 @@
       1
     }
 
-    set text(font: "Liberation Sans", size: 9pt)
+    set text(font: sans-serif-font, size: 9pt)
     if it.level == 1 [
       // First-level headings are centered smallcaps.
       // We don't want to number of the acknowledgment section.
@@ -130,14 +133,14 @@
 
   // Display the paper's title.
   v(3pt, weak: true)
-  align(center, text(18pt, title, font: "Liberation Sans"))
+  align(center, text(18pt, title, font: sans-serif-font))
   v(23pt, weak: true)
 
   // Display the authors list.
   let and-comma = if authors.len() == 2 {" and "} else {", and "}
   
   align(center,
-    text(10pt, font: "Liberation Sans", authors.map(author => {
+    text(10pt, font: sans-serif-font, authors.map(author => {
         author.name
         if "orcid" in author and author.orcid != "" {
           link("https://orcid.org/" + author.orcid)[#box(height: 1.1em, baseline: 13.5%)[#image("assets/orcid.svg")]]
@@ -184,7 +187,7 @@
       width: 100%,[
         #align(center, line(length: 50%))
 
-        #set text(style: "italic", size: 7.5pt, font: "Liberation Serif")
+        #set text(style: "italic", size: 7.5pt, font: serif-font)
         #set list(indent: 0pt, body-indent: 5pt)
         #for author in authors [
           - #author.name is with #author.organization. #box(if "email" in author [E-mail: #author.email.])
@@ -198,7 +201,7 @@
   )
 
   // Set the body font.
-  set text(font: "Liberation Serif", size: 9pt)
+  set text(font: serif-font, size: 9pt)
 
   // Display the paper's contents.
   body
