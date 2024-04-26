@@ -11,11 +11,11 @@
   title: [Paper Title],
 
   // An array of authors. For each author you can specify a name,
-  // department, organization, location, and email. Everything but
-  // but the name is optional.
+  // department, organization, location, and email.
+  // Everything but the name is optional.
   authors: (),
 
-  // The paper's abstract. Can be omitted if you don't have one.
+  // The paper's abstract.
   abstract: none,
 
   // Teaser image path and caption
@@ -37,18 +37,16 @@
   set document(title: title, author: authors.map(author => author.name))
 
   // Set the body font.
-  set text(font: sans-serif-font, size: 9pt)
+  set text(font: serif-font, size: 9pt)
 
   // Configure the page.
   set page(
     paper: paper-size,
-    // The margins depend on the paper size.
     margin: (
-      x: (50pt / 216mm) * 100%,
-      // top: (55pt / 279mm) * 100%,
-      top: 54pt,
-      // bottom: (64pt / 279mm) * 100%,
-      bottom: 45pt
+      top: 54pt, // 0.75in
+      bottom: 45pt, // 0.625in
+      inside: 54pt, // 0.75in
+      outside: 45pt // 0.625in
     )
   )
 
@@ -88,8 +86,8 @@
     set text(font: sans-serif-font, size: 9pt)
     if it.level == 1 [
       // First-level headings are centered smallcaps.
-      // We don't want to number of the acknowledgment section.
-      #let is-ack = it.body in ([Acknowledgment], [Acknowledgement])
+      // We don't want to number the acknowledgments section.
+      #let is-ack = it.body in ([Acknowledgments], [Acknowledgements])
       #show: smallcaps
       #v(20pt, weak: true)
       #if it.numbering != none and not is-ack {
@@ -149,36 +147,37 @@
     )
   )
   
-  v(20pt, weak: true)
-
-  // Insert teaser image
-  [#figure(
-      teaser.image,
-      caption: teaser.caption,
-    ) <teaser>
-  ]
-
-  v(20pt, weak: true)
-
-  // Display abstract and index terms.
-  if abstract != none {
-    block(inset: (left: 24pt, right: 24pt), [
-        #set par(justify: true)
-        *Abstract*---#abstract
+  v(50pt, weak: true)
+  block(inset: (left: 24pt, right: 24pt), [
     
-        #if index-terms != () [
-          *Index terms*---#index-terms.join(", ")
+      // Insert teaser image
+      #figure(
+          teaser.image,
+          caption: teaser.caption,
+        ) <teaser>
+      
+
+      #v(20pt, weak: true)
+
+      // Display abstract and index terms.
+      #(if abstract != none [
+          #set par(justify: true)
+          *Abstract*---#abstract
+      
+          #if index-terms != () [
+            *Index terms*---#index-terms.join(", ")
+          ]
         ]
-      ]
-    )
-  }
+      )
+    ]
+  )
 
   v(10pt, weak: true)
   align(center, box(width: 40%)[#image("assets/diamondrule.svg")])
   v(15pt, weak: true)
 
   // Start two column mode and configure paragraph properties.
-  show: columns.with(2, gutter: 12pt)
+  show: columns.with(2, gutter: 12.24pt) // 0.17in
   set par(justify: true, first-line-indent: 1em)
   show par: set block(spacing: 0.65em)
 

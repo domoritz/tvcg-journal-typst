@@ -123,5 +123,6 @@ $ a + b = gamma $
 
 #lorem(200)
 
-= Acknowledgment
-#lorem(50)
+= Acknowledgments
+The authors wish to thank A, B, and C.
+This work was supported in part by a grant from XYZ (\# 12345-67890).
