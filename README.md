@@ -10,4 +10,9 @@ First, link the current directory as a [Typst local package](https://github.com/
 
 Then run `typst compile template/main.typ --root template/` to compile the template against the development version of the package. If you want to use the released version of the tvcg-journal package, delete the local symlink.
 
-Install the required fonts locally with `brew install font-liberation`.
+
+### Fonts
+**Linux:** Install the required fonts locally with `brew install font-liberation`.
+
+**Windows:** Install the fonts `Liberation Serif` and `Liberation Sans`.
+You can find them in the `./assets/fonts` directory.
