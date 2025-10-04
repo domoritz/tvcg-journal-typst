@@ -14,5 +14,4 @@ Then run `typst compile template/main.typ --root template/` to compile the templ
 ### Fonts
 **Mac and Linux:** Install the required fonts locally with `brew install font-liberation`.
 
-**Windows:** Install the fonts `Liberation Serif` and `Liberation Sans`.
-You can find them in the `./assets/fonts` directory.
+**Windows:** Install the fonts `Liberation Serif` and `Liberation Sans`. you can download them from [here](https://github.com/liberationfonts/liberation-fonts).
