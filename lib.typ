@@ -74,9 +74,9 @@
 
   // Configure headings.
   set heading(numbering: "1.1.1.")
-  show heading: it => locate(loc => {
+  show heading: it => context {
     // Find out the final number of the heading counter.
-    let levels = counter(heading).at(loc)
+    let levels = counter(heading).get()
     let deepest = if levels != () {
       levels.last()
     } else {
@@ -105,7 +105,7 @@
           }
         }
       }
-        
+
       // *#it.body*
       #v(13.75pt, weak: true)
     ] else if it.level == 2 [
@@ -127,7 +127,7 @@
       }
       _#(it.body):_
     ]
-  })
+  }
 
   // Display the paper's title.
   v(3pt, weak: true)
@@ -178,8 +178,7 @@
 
   // Start two column mode and configure paragraph properties.
   show: columns.with(2, gutter: 12.24pt) // 0.17in
-  set par(justify: true, first-line-indent: 1em)
-  show par: set block(spacing: 0.65em)
+  set par(justify: true, first-line-indent: 1em, spacing: 0.65em)
 
   // Display the email address and manuscript info.
   place(left+bottom, float: true, block(

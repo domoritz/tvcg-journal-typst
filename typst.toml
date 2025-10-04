@@ -1,7 +1,7 @@
 [package]
 name = "tvcg-journal"
 version = "0.0.1"
-compiler = "0.10.0"
+compiler = "0.13.1"
 entrypoint = "lib.typ"
 repository = "https://github.com/domoritz/tvcg-journal-typst"
 authors = ["Matěj Lang <https://www.linkedin.com/in/matej-lang/>", "Dominik Moritz <https://www.domoritz.de>"]
