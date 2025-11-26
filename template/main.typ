@@ -2,11 +2,7 @@
 
 #show: tvcg.with(
   title: [Global Illumination for Fun and Profit],
-  abstract: [
-    #lorem(150)
-
-     A free copy of this paper and all supplemental materials are available at https://OSF.IO/2NBSG.
-  ],
+  abstract: [#lorem(125) A free copy of this paper and all supplemental materials are available at https://OSF.IO/2NBSG.],
   authors: (
     (
       name: "Josiah S. Carberry",
@@ -29,7 +25,7 @@
     image: image("figs/CypressView.jpg", alt: "A view of a city with buildings peeking out of the clouds."),
     caption: "In the Clouds: Vancouver from Cypress Mountain. Note that the teaser may not be wider than the abstract block."
   ),
-  index-terms: ("Radiosity", "Global Illumination", "Constant Time"),
+  index-terms: ("Radiosity", "global illumination", "constant time"),
   bibliography: bibliography("refs.bib"),
 )
 
@@ -52,7 +48,7 @@ Links are automatically shown for URLs but you can customize the name of the lin
 
 Typst automatically detects the type of figure (i.e., table, image, or code) and label them accordingly. Figures are documented at https://typst.app/docs/reference/model/figure/.
 
-for figures with images, the image format is usually detected automatically. For details, head over to the image documentation: https://typst.app/docs/reference/visualize/image/.
+For figures with images, the image format is usually detected automatically. For details, head over to the image documentation: https://typst.app/docs/reference/visualize/image/.
 
 #figure(
   image("figs/CypressView.jpg", alt: "A view of a city with buildings peeking out of the clouds."),

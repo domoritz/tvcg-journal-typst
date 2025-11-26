@@ -1,8 +1,9 @@
 // Workaround for the lack of an `std` scope.
 #let std-bibliography = bibliography
 
-#let serif-font = "Liberation Serif"
-#let sans-serif-font = "Liberation Sans"
+#let serif-font = "Times New Roman" // "Liberation Serif"
+#let sans-serif-font = "Helvetica" // "Liberation Sans"
+#let mono-font = "Liberation Mono" // LaTeX uses txtt. Alt: "Courier New", "Nimbus Mono"
 
 // This function gets your whole document as its `body` and formats
 // it as an article in the style of the TVCG.
@@ -39,6 +40,18 @@
   // Set the body font.
   set text(font: serif-font, size: 9pt)
 
+  // Configure links to use NavyBlue color and monospace font (matching LaTeX hyperref/url settings)
+  show link: it => {
+    set text(fill: rgb("#000080")) // NavyBlue (SVG color)
+    // URLs should use monospace font like LaTeX \url{}
+    if type(it.dest) == str {
+      set text(font: mono-font)
+      it
+    } else {
+      it
+    }
+  }
+
   // Configure the page.
   set page(
     paper: paper-size,
@@ -72,8 +85,17 @@
   set enum(indent: 10pt, body-indent: 9pt)
   set list(indent: 10pt, body-indent: 9pt)
 
+  // Configure figure captions.
+  // LaTeX uses: \captionsetup{font={scriptsize,sf}} and default \abovecaptionskip (10pt)
+  // scriptsize is approximately 7-8pt, sf is sans-serif
+  set figure(gap: 10pt) // Space between figure and caption (LaTeX default \abovecaptionskip)
+  show figure.caption: it => {
+    set text(font: sans-serif-font, size: 8pt)
+    it
+  }
+
   // Configure headings.
-  set heading(numbering: "1.1.1.")
+  set heading(numbering: "1.1.1")
   show heading: it => context {
     // Find out the final number of the heading counter.
     let levels = counter(heading).get()
@@ -84,14 +106,17 @@
     }
 
     set text(font: sans-serif-font, size: 9pt)
+    set par(first-line-indent: 0pt) // Headings themselves should not be indented
+
     if it.level == 1 [
       // First-level headings are centered smallcaps.
       // We don't want to number the acknowledgments section.
       #let is-ack = it.body in ([Acknowledgments], [Acknowledgements])
       #show: smallcaps
-      #v(20pt, weak: true)
+      // LaTeX uses -2ex (≈18pt) space before section headings
+      #v(18pt, weak: true)
       #if it.numbering != none and not is-ack {
-        numbering("1.", deepest)
+        numbering("1", deepest)
         h(7pt, weak: true)
       }
       #if it.body.has("text"){
@@ -107,14 +132,14 @@
       }
 
       // *#it.body*
-      #v(13.75pt, weak: true)
+      #v(7.2pt, weak: true)
     ] else if it.level == 2 [
       // Second-level headings are run-ins.
-      #set par(first-line-indent: 0pt)
       #set text(style: "italic")
-      #v(10pt, weak: true)
+      // LaTeX uses -1.8ex (≈16pt) space before subsection headings
+      #v(16pt, weak: true)
       #if it.numbering != none {
-        numbering("1.", deepest)
+        numbering("1", deepest)
         h(7pt, weak: true)
       }
       *#it.body*
@@ -146,8 +171,8 @@
       } ).join(", ", last: and-comma)
     )
   )
-  
-  v(50pt, weak: true)
+
+  v(6pt, weak: true)
   block(inset: (left: 24pt, right: 24pt), [
     
       // Insert teaser image
@@ -155,15 +180,16 @@
           teaser.image,
           caption: teaser.caption,
         ) <teaser>
-      
 
-      #v(20pt, weak: true)
+      #v(10pt, weak: true)
 
       // Display abstract and index terms.
+      // LaTeX uses \scriptsize (8pt with 9.5pt leading)
       #(if abstract != none [
-          #set par(justify: true)
-          *Abstract*---#abstract
-      
+          #set par(justify: true, leading: 0.65em)
+          #set text(font: sans-serif-font, size: 8pt)
+          #[*Abstract*---#abstract]
+
           #if index-terms != () [
             *Index terms*---#index-terms.join(", ")
           ]
@@ -173,23 +199,27 @@
   )
 
   v(10pt, weak: true)
-  align(center, box(width: 40%)[#image("assets/diamondrule.svg")])
+  align(center, image("assets/diamondrule.svg", width: 40%))
   v(15pt, weak: true)
 
   // Start two column mode and configure paragraph properties.
   show: columns.with(2, gutter: 12.24pt) // 0.17in
-  set par(justify: true, first-line-indent: 1em, spacing: 0.65em)
+
+  // LaTeX uses 9pt font with 10pt baseline skip
+  set par(justify: true, first-line-indent: 1em, leading: 0.55em, spacing: 0.65em)
+
 
   // Display the email address and manuscript info.
   place(left+bottom, float: true, block(
       width: 100%,[
-        #align(center, line(length: 50%))
+        #align(center, line(length: 50%, stroke: 0.4pt))
 
         #set text(style: "italic", size: 7.5pt, font: serif-font)
-        #set list(indent: 0pt, body-indent: 5pt)
+        #set list(indent: 0pt, body-indent: 5pt, spacing: 0.5em)
         #for author in authors [
           - #author.name is with #author.organization. #box(if "email" in author [E-mail: #author.email.])
         ]
+        #v(4pt)
         Manuscript received DD MMM. YYYY; accepted DD MMM. YYYY.
         Date of Publication DD MMM. YYYY; date of current version DD MMM. YYYY.
         For information on obtaining reprints of this article, please send e-mail to: reprints`@`ieee.org.
