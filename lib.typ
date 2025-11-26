@@ -67,16 +67,17 @@
   set math.equation(numbering: "(1)")
   show math.equation: set block(spacing: 0.65em)
 
-  // Configure appearance of equation references
+  // Configure appearance of all references - blue color with special equation handling
   show ref: it => {
+    set text(fill: rgb("#000080")) // NavyBlue (SVG color) for all references
     if it.element != none and it.element.func() == math.equation {
-      // Override equation references.
+      // Override equation references to show just the number
       link(it.element.location(), numbering(
         it.element.numbering,
         ..counter(math.equation).at(it.element.location())
       ))
     } else {
-      // Other references as usual.
+      // Other references as usual
       it
     }
   }
@@ -134,20 +135,20 @@
       // *#it.body*
       #v(7.2pt, weak: true)
     ] else if it.level == 2 [
-      // Second-level headings are run-ins.
-      #set text(style: "italic")
+      // Second-level headings (subsections) - bold sans-serif
       // LaTeX uses -1.8ex (≈16pt) space before subsection headings
       #v(16pt, weak: true)
       #if it.numbering != none {
-        numbering("1", deepest)
+        numbering("1.1", ..levels)
         h(7pt, weak: true)
       }
       *#it.body*
-      #v(10pt, weak: true)
+      // LaTeX uses 0.8ex (≈7.2pt) space after subsection headings
+      #v(7.2pt, weak: true)
     ] else [
       // Third level headings are run-ins too, but different.
       #if it.level == 3 {
-        numbering("1)", deepest)
+        numbering("1.1.1)", ..levels)
         [ ]
       }
       _#(it.body):_

@@ -112,6 +112,32 @@ To demonstrate the potential of Typst, we conducted a series of experiments comp
 
 Overall, we believe that Typst represents a significant step forward in the field of scientific writing and typesetting, providing researchers with a valuable tool to streamline their workflow and focus on what really matters: their research. In the following sections, we will introduce Typst in more detail and provide evidence for its superiority over other typesetting systems in a variety of scenarios.
 
+= Equations and Tables
+
+Equations can be added like so:
+
+$ sum_(j=1)^z j = (z(z+1))/2 $ <eq:sum>
+
+Tables, such as @tab:example can also be included.
+
+#figure(
+  table(
+    columns: 4,
+    align: (left, right, right, right),
+    stroke: (x, y) => (
+      top: if y == 0 { 0.75pt } else if y == 1 { 0.5pt } else { 0pt },
+      bottom: 1pt,
+    ),
+    [*Year*], [*Vis/SciVis*], [*InfoVis*], [*VAST*],
+    [2016], [30], [37], [33],
+    [2015], [33], [38], [33],
+    [2014], [34], [45], [33],
+    [2013], [31], [38], [32],
+    [2012], [42], [44], [30],
+  ),
+  caption: [Example table with conference paper counts. Numbers should be right aligned.]
+) <tab:example>
+
 = Methods
 #lorem(90)
 
