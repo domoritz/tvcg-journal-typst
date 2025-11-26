@@ -1,0 +1,43 @@
+name: Publish to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Typst
+        uses: typst-community/setup-typst@v3
+        with:
+          version: latest
+      - name: Create artifact directory
+        run: mkdir -p _site
+      - name: Compile to PDF
+        run: typst compile template/main.typ _site/main.pdf --root template/
+      - name: Compile to HTML
+        run: typst compile template/main.typ _site/main.html --root template/
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
