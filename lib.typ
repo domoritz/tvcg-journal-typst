@@ -59,12 +59,28 @@
   // Set the body font.
   set text(font: serif-font, size: 9pt)
 
+  // Custom small caps with dual sizing (hack for fonts without small caps)
+  // TODO: Remove when Typst implements synthetic small caps: https://github.com/typst/typst/issues/7009
+  let render-smallcaps(body) = {
+    if body.has("text") {
+      for letter in body.text {
+        if letter == upper(letter) {
+          text(size: 9pt, letter)
+        } else {
+          text(size: 7pt, upper(letter))
+        }
+      }
+    } else {
+      smallcaps(body)
+    }
+  }
+
   // Configure links to use NavyBlue color and monospace font (matching LaTeX hyperref/url settings)
   show link: it => {
     set text(fill: rgb("#000080")) // NavyBlue (SVG color)
     // URLs should use monospace font like LaTeX \url{}
     if type(it.dest) == str {
-      set text(font: mono-font)
+      set text(font: mono-font, size: 8pt)
       it
     } else {
       it
@@ -123,61 +139,33 @@
 
   // Configure headings.
   set heading(numbering: "1.1.1")
-  show heading: it => context {
-    // Find out the final number of the heading counter.
-    let levels = counter(heading).get()
-    let deepest = if levels != () {
-      levels.last()
-    } else {
-      1
-    }
 
-    set text(font: sans-serif-font, size: 9pt)
-    set par(first-line-indent: 0pt) // Headings themselves should not be indented
+  // Global heading styling - sans-serif font, 9pt
+  show heading: set text(font: sans-serif-font, size: 9pt, weight: "bold")
 
-    if it.level == 1 [
-      // First-level headings are centered smallcaps.
-      // We don't want to number the acknowledgments section.
-      #let is-ack = it.body in ([Acknowledgments], [Acknowledgements])
-      #show: smallcaps
-      // LaTeX uses -2ex (≈18pt) space before section headings
-      #v(18pt, weak: true)
+  // Level 1: Section headings - left-aligned small caps
+  // LaTeX uses -2ex (≈18pt) before and 0.8ex (≈7.2pt) after
+  show heading.where(level: 1): it => {
+    let is-ack = it.body in ([Acknowledgments], [Acknowledgements])
+
+    block(above: 18pt, below: 7.2pt)[
       #if it.numbering != none and not is-ack {
-        numbering("1", deepest)
+        numbering("1", ..counter(heading).get())
         h(7pt, weak: true)
       }
-      #if it.body.has("text"){
-        for letter in it.body.text{
-          if letter == upper(letter) {
-            set text(size: 9pt)
-            letter
-          } else {
-            set text(size: 7pt)
-            upper(letter)
-          }
-        }
-      }
+      #render-smallcaps(it.body)
+    ]
+  }
 
-      // *#it.body*
-      #v(7.2pt, weak: true)
-    ] else if it.level == 2 [
-      // Second-level headings (subsections) - bold sans-serif
-      // LaTeX uses -1.8ex (≈16pt) space before subsection headings
-      #v(16pt, weak: true)
-      #if it.numbering != none {
-        numbering("1.1", ..levels)
-        h(7pt, weak: true)
-      }
-      *#it.body*
-      // LaTeX uses 0.8ex (≈7.2pt) space after subsection headings
-      #v(7.2pt, weak: true)
-    ] else [
-      // Third level headings are run-ins too, but different.
-      #if it.level == 3 {
-        numbering("1.1.1)", ..levels)
-        [ ]
-      }
-      _#(it.body):_
+  // Level 2: Subsection headings - bold sans-serif, left-aligned
+  // LaTeX uses -1.8ex (≈16pt) before and 0.8ex (≈7.2pt) after
+  show heading.where(level: 2): set block(above: 16pt, below: 7.2pt)
+
+  // Level 3: Sub-subsection headings - italic run-in
+  show heading.where(level: 3): it => {
+    text(style: "italic", weight: "normal")[
+      #numbering("1.1.1)", ..counter(heading).get())
+      #it.body:
     ]
   }
 
@@ -278,7 +266,11 @@
   // Display bibliography.
   if bibliography != none {
     show std-bibliography: set text(8pt)
-    set std-bibliography(title: text(10pt)[References], style: "ieee")
+    // References heading with small caps styling matching section headings
+    set std-bibliography(
+      title: text(font: sans-serif-font, size: 9pt, weight: "bold")[#render-smallcaps([References])],
+      style: "ieee"
+    )
     bibliography
   }
 }
