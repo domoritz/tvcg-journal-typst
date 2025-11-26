@@ -3,7 +3,7 @@
 
 #let serif-font = ("Times New Roman", "Liberation Serif")
 #let sans-serif-font = ("Helvetica", "Liberation Sans")
-#let mono-font = ("Liberation Mono", "Courier New") // LaTeX uses txtt
+#let mono-font = ("Liberation Mono") // LaTeX uses txtt
 
 // This function gets your whole document as its `body` and formats
 // it as an article in the style of the TVCG.
