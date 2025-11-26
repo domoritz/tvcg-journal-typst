@@ -31,8 +31,6 @@ jobs:
         run: mkdir -p _site
       - name: Compile to PDF
         run: typst compile template/main.typ _site/main.pdf --root template/
-      - name: Compile to HTML
-        run: typst compile template/main.typ _site/main.html --root template/ --features html
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
