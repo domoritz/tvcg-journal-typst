@@ -12,7 +12,7 @@ permissions:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -21,12 +21,7 @@ jobs:
         with:
           typst-version: latest
       - name: Link local package
-        run: |
-          version=$(grep -E "^version\s*=" "typst.toml" | cut -d '"' -f 2)
-          target_dir=~/.local/share/typst/packages/preview/tvcg-journal/$version
-          mkdir -p $(dirname "$target_dir")
-          ln -s $(pwd) "$target_dir"
-          echo "Created symlink for tvcg-journal version $version at $target_dir"
+        run: ./link.sh
       - name: Create artifact directory
         run: mkdir -p _site
       - name: Compile to PDF
@@ -38,7 +33,7 @@ jobs:
 
   deploy:
     needs: build
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
