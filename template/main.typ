@@ -105,6 +105,22 @@ fn main() {
 }
 ```
 
+== Lists
+
+You can create both numbered and bulleted lists:
+
++ First item in a numbered list
++ Second item with multiple lines of text that wraps to demonstrate how the indentation works
++ Third item
+
+Bulleted lists work similarly:
+
+- First bullet point
+- Second bullet point
+  - Nested bullet point
+  - Another nested item
+- Third bullet point
+
 = References
 
 An example of the reference formatting is provided in the *References* section at the end.
