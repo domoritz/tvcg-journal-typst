@@ -31,11 +31,30 @@
   // The result of a call to the `bibliography` function or `none`.
   bibliography: none,
 
+  // Review mode - hides authors and shows submission info
+  review: false,
+
+  // Submission ID (for review mode)
+  submission-id: 0,
+
+  // Category (for review mode)
+  category: none,
+
+  // Paper type (for review mode)
+  paper-type: none,
+
+  // Custom manuscript note (appears in footer of first page)
+  manuscript-note: none,
+
   // The paper's content.
   body
 ) = {
   // Set document metadata.
-  set document(title: title, author: authors.map(author => author.name))
+  if review {
+    set document(title: title, author: "Anonymous")
+  } else {
+    set document(title: title, author: authors.map(author => author.name))
+  }
 
   // Set the body font.
   set text(font: serif-font, size: 9pt)
@@ -60,7 +79,14 @@
       bottom: 45pt, // 0.625in
       inside: 54pt, // 0.75in
       outside: 45pt // 0.625in
-    )
+    ),
+    header: if review {
+      context {
+        if calc.odd(counter(page).get().first()) {
+          align(center, emph([Online Submission ID: #submission-id]))
+        }
+      }
+    }
   )
 
   // Configure equation numbering and spacing.
@@ -160,18 +186,26 @@
   align(center, text(18pt, title, font: sans-serif-font))
   v(23pt, weak: true)
 
-  // Display the authors list.
-  let and-comma = if authors.len() == 2 {" and "} else {", and "}
-  
-  align(center,
-    text(10pt, font: sans-serif-font, authors.map(author => {
-        author.name
-        if "orcid" in author and author.orcid != "" {
-          link("https://orcid.org/" + author.orcid)[#box(height: 1.1em, baseline: 13.5%)[#image("assets/orcid.svg")]]
-        }
-      } ).join(", ", last: and-comma)
+  // Display the authors list or submission info (if review mode).
+  if review {
+    align(center, text(10pt, font: sans-serif-font, [
+      Category: #category
+      #v(-0.2em)
+      Paper Type: #paper-type
+    ]))
+  } else {
+    let and-comma = if authors.len() == 2 {" and "} else {", and "}
+
+    align(center,
+      text(10pt, font: sans-serif-font, authors.map(author => {
+          author.name
+          if "orcid" in author and author.orcid != "" {
+            link("https://orcid.org/" + author.orcid)[#box(height: 1.1em, baseline: 13.5%)[#image("assets/orcid.svg")]]
+          }
+        } ).join(", ", last: and-comma)
+      )
     )
-  )
+  }
 
   v(6pt, weak: true)
   block(inset: (left: 24pt, right: 24pt), [
@@ -210,24 +244,30 @@
   set par(justify: true, first-line-indent: 1em, leading: 0.55em, spacing: 0.65em)
 
 
-  // Display the email address and manuscript info.
-  place(left+bottom, float: true, block(
-      width: 100%,[
-        #align(center, line(length: 50%, stroke: 0.4pt))
+  // Display the email address and manuscript info (not shown in review mode).
+  if not review {
+    place(left+bottom, float: true, block(
+        width: 100%,[
+          #align(center, line(length: 50%, stroke: 0.4pt))
 
-        #set text(style: "italic", size: 7.5pt, font: serif-font)
-        #set list(indent: 0pt, body-indent: 5pt, spacing: 0.5em)
-        #for author in authors [
-          - #author.name is with #author.organization. #box(if "email" in author [E-mail: #author.email.])
+          #set text(style: "italic", size: 7.5pt, font: serif-font)
+          #set list(indent: 0pt, body-indent: 5pt, spacing: 0.5em)
+          #for author in authors [
+            - #author.name is with #author.organization. #box(if "email" in author [E-mail: #author.email.])
+          ]
+          #v(4pt)
+          #if manuscript-note != none [
+            #manuscript-note
+          ] else [
+            Manuscript received DD MMM. YYYY; accepted DD MMM. YYYY.
+            Date of Publication DD MMM. YYYY; date of current version DD MMM. YYYY.
+            For information on obtaining reprints of this article, please send e-mail to: reprints`@`ieee.org.
+            Digital Object Identifier: xx.xxxx/TVCG.YYYY.xxxxxxx
+          ]
         ]
-        #v(4pt)
-        Manuscript received DD MMM. YYYY; accepted DD MMM. YYYY.
-        Date of Publication DD MMM. YYYY; date of current version DD MMM. YYYY.
-        For information on obtaining reprints of this article, please send e-mail to: reprints`@`ieee.org.
-        Digital Object Identifier: xx.xxxx/TVCG.YYYY.xxxxxxx
-      ]
+      )
     )
-  )
+  }
 
   // Set the body font.
   set text(font: serif-font, size: 9pt)

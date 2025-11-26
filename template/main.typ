@@ -1,6 +1,18 @@
 #import "@preview/tvcg-journal:0.0.1": tvcg
 
 #show: tvcg.with(
+  // Set review: true to enable review mode (hides authors, shows submission info)
+  review: false,
+  submission-id: 1234,
+  category: "Research",
+  // Please declare the paper type of your paper to help reviewers, only shown in review mode
+  // Choices:
+  // * algorithm/technique
+  // * application/design study
+  // * evaluation
+  // * system
+  // * theory/model
+  paper-type: "algorithm/technique",
   title: [Global Illumination for Fun and Profit],
   abstract: [#lorem(125) A free copy of this paper and all supplemental materials are available at https://OSF.IO/2NBSG.],
   authors: (
