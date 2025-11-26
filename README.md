@@ -6,7 +6,7 @@ A [Typst](https://typst.app) template for TVCG journals and the IEEE VIS Confere
 
 <p align="center"><img src="thumbnail.png" width="500"/></p>
 
-Live [preview of the PDF template](https://domoritz.github.io/tvcg-journal-typst/main.pdf) (although it is using whatever fonts are available on GitHub Actions runners, so it may look different than your local build).
+Live [preview of the PDF template](https://domoritz.github.io/tvcg-journal-typst/main.pdf).
 
 ## Development
 
