@@ -65,12 +65,6 @@ For figures with images, the image format is usually detected automatically. For
 #figure(
   image("figs/CypressView.jpg", alt: "A view of a city with buildings peeking out of the clouds."),
   caption: "Caption",
-  )
-#figure(
-  grid(columns: 2, row-gutter: 2mm, column-gutter: 1mm,
-  image("figs/CypressView.jpg", alt: "A view of a city with buildings peeking out of the clouds."),
-  align(horizon)[#image("figs/CypressView.jpg", alt: "A view of a city with buildings peeking out of the clouds.")]),
-  caption: "Caption"
 )
 
 == Vector figures
@@ -95,6 +89,17 @@ The use of figures other than the optional teaser is not permitted on the first 
 Other figures should begin on the second page.
 Papers submitted with figures other than the optional teaser on the first page will be refused.
 
+== Figures with subfigures
+
+Use the grid function to create subfigures.
+
+#figure(
+  grid(columns: 2, row-gutter: 2mm, column-gutter: 1mm,
+  image("figs/CypressView.jpg", alt: "A view of a city with buildings peeking out of the clouds."),
+  align(horizon)[#image("figs/CypressView.jpg", alt: "A view of a city with buildings peeking out of the clouds.")]),
+  caption: "Caption"
+)
+
 == Code
 
 Typst supports code blocks and inline code: https://typst.app/docs/reference/text/raw/. For example
@@ -105,7 +110,7 @@ fn main() {
 }
 ```
 
-== Lists
+= Lists
 
 You can create both numbered and bulleted lists:
 

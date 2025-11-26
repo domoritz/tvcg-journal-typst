@@ -27,7 +27,8 @@ Then run `typst compile template/main.typ --root template/` to compile the templ
 ### Creating a Thumbnail
 
 ```bash
-typst compile template/main.typ --root template/ && magick -density 150 template/main.pdf[0] -quality 85 thumbnail.png
+typst compile -f png --pages 1 --ppi 250 template/main.typ --root template/ thumbnail.png
+oxipng -o 4 --strip safe --alpha thumbnail.png
 ```
 
-This compiles the template and converts the first page to a PNG thumbnail. Requires [ImageMagick](https://imagemagick.org/) to be installed.
+You are encouraged to use [oxipng](https://github.com/oxipng/oxipng) to reduce the thumbnail's file size.
