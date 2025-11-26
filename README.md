@@ -1,6 +1,8 @@
 # tvcg-journal-typst
 
-A [Typst](https://typst.app) template for TVCG journals and the IEEE VIS Conference. This is work in progress and not yet ready. This project was started by Matěj Lang at https://typst.app/project/pdh8Qj4vO7tfB1oiWoHuez. Please help us finish it to look as close as possible to the [LaTeX template](https://github.com/ieeevgtc/tvcg-journal-latex).
+A [Typst](https://typst.app) template for TVCG journals and the IEEE VIS Conference. We aim to closely mirror the [LaTeX template](https://github.com/ieeevgtc/tvcg-journal-latex).
+
+<p align="center"><img src="thumbnail.png" width="500"/></p>
 
 ## Development
 
@@ -12,9 +14,11 @@ Then run `typst compile template/main.typ --root template/` to compile the templ
 
 
 ### Fonts
+
 **Mac and Linux:** Install the required fonts locally with `brew install font-liberation`.
 
 **Windows:** Install the fonts `Liberation Serif` and `Liberation Sans`. you can download them from [here](https://github.com/liberationfonts/liberation-fonts).
+
 
 ### Creating a Thumbnail
 
