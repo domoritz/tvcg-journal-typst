@@ -19,13 +19,20 @@ jobs:
       - name: Setup Typst
         uses: typst-community/setup-typst@v3
         with:
-          version: latest
+          typst-version: latest
+      - name: Link local package
+        run: |
+          version=$(grep -E "^version\s*=" "typst.toml" | cut -d '"' -f 2)
+          target_dir=~/.local/share/typst/packages/preview/tvcg-journal/$version
+          mkdir -p $(dirname "$target_dir")
+          ln -s $(pwd) "$target_dir"
+          echo "Created symlink for tvcg-journal version $version at $target_dir"
       - name: Create artifact directory
         run: mkdir -p _site
       - name: Compile to PDF
         run: typst compile template/main.typ _site/main.pdf --root template/
       - name: Compile to HTML
-        run: typst compile template/main.typ _site/main.html --root template/
+        run: typst compile template/main.typ _site/main.html --root template/ --features html
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:

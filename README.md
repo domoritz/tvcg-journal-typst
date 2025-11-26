@@ -2,7 +2,15 @@
 
 A [Typst](https://typst.app) template for TVCG journals and the IEEE VIS Conference. We aim to closely mirror the [LaTeX template](https://github.com/ieeevgtc/tvcg-journal-latex).
 
+## Previews
+
 <p align="center"><img src="thumbnail.png" width="500"/></p>
+
+Live previews:
+
+- [**PDF**](https://domoritz.github.io/tvcg-journal-typst/main.pdf)
+- [**HTML**](https://domoritz.github.io/tvcg-journal-typst/main.html)
+
 
 ## Development
 
