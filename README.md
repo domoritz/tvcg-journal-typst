@@ -2,6 +2,8 @@
 
 A [Typst](https://typst.app) template for TVCG journals and the IEEE VIS Conference. We aim to closely mirror the [LaTeX template](https://github.com/ieeevgtc/tvcg-journal-latex).
 
+**While the template is work in progress, you are encouraged to use it. Please ensure that the results adhere to the [publications guidelines](https://tc.computer.org/vgtc/publications/conference/).**
+
 ## Usage
 
 You can use this template in the Typst web app by clicking "Start from template" on the dashboard and searching for tvcg-journal.
