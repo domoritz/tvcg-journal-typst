@@ -25,21 +25,31 @@ If you don't want to use typship, you can link the current directory as a [Typst
 
 **Windows:** Install the fonts `Liberation Serif` and `Liberation Sans`. you can download them from [here](https://github.com/liberationfonts/liberation-fonts).
 
-## Creating a thumbnail
+## Making new releases
+
+### Creating a thumbnail and preview
+
+Run the following commands to create `preview.pdf` and `thumbnail.png`:
+
+```bash
+typst compile template/main.typ --root template/ preview.pdf
+```
 
 ```bash
 typst compile -f png --pages 1 --ppi 250 template/main.typ --root template/ thumbnail.png
 oxipng -o 4 --strip safe --alpha thumbnail.png
 ```
 
-You are encouraged to use [oxipng](https://github.com/oxipng/oxipng) to reduce the thumbnail's file size.
+We use [oxipng](https://github.com/oxipng/oxipng) to reduce the thumbnail's file size.
 
-## Checking the package
+### Checking the package
 
 Run `typst-package-check check` with [typst-package-check](https://github.com/typst/package-check). Also run `typship check`.
 
-## Publishing a new version
+### Publishing a new version
 
 Bump the version in `typst.toml` and `template/main.typ` and the Readme.
 
 Then log in with `typship login universe` and run `typship publish universe`.
+
+Check the pull request and remove files that should not be part of it such as the link scripts.

@@ -26,4 +26,4 @@ The template will be imported like this:
 
 <p align="center"><img src="thumbnail.png" width="500"/></p>
 
-Live [preview of the PDF template](https://domoritz.github.io/tvcg-journal-typst/main.pdf).
+Live [preview of the PDF template](preview.pdf).
