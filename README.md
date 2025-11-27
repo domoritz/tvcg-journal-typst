@@ -45,3 +45,8 @@ The template exports the `tvcg` function with the following named arguments:
 <p align="center"><img src="thumbnail.png" width="500"/></p>
 
 Live [preview of the PDF template](preview.pdf).
+
+## Image credits for the images in the template
+
+The cloud image is by Dominik Moritz licensed under [CC0](https://creativecommons.org/public-domain/cc0/).
+The visualization is generated from [Vega-Lite](https://vega.github.io/vega-lite/) example [Weather Types by Month](https://vega.github.io/editor/#/examples/vega-lite/stacked_bar_weather) under [CC BY](https://creativecommons.org/licenses/by/4.0/).
