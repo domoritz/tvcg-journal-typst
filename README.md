@@ -1,17 +1,17 @@
-# tvcg-journal-typst
+# ieee-vgtc
 
-A [Typst](https://typst.app) template for TVCG journals and the IEEE VIS Conference. We aim to closely mirror the [LaTeX template](https://github.com/ieeevgtc/tvcg-journal-latex).
+A [Typst](https://typst.app) template for IEEE VGTC (Visualization and Graphics Technical Community) conferences and TVCG (Transactions on Visualization and Computer Graphics) journal papers. This includes IEEE VIS, IEEE VR, and ISMAR conferences. We aim to closely mirror the [LaTeX template](https://github.com/ieeevgtc/tvcg-journal-latex).
 
 **While the template is work in progress, you are encouraged to use it. Please ensure that the results adhere to the [publications guidelines](https://tc.computer.org/vgtc/publications/conference/).**
 
 ## Usage
 
-You can use this template in the Typst web app by clicking "Start from template" on the dashboard and searching for tvcg-journal.
+You can use this template in the Typst web app by clicking "Start from template" on the dashboard and searching for ieee-vgtc.
 
 Alternatively, you can use the CLI to kick this project off using the command
 
 ```bash
-typst init @preview/tvcg-journal
+typst init @preview/ieee-vgtc
 ```
 
 Typst will create a new directory with all the files needed to get you started.
@@ -19,12 +19,12 @@ Typst will create a new directory with all the files needed to get you started.
 The template will be imported like this:
 
 ```typst
-#import "@preview/tvcg-journal:0.0.1": tvcg
+#import "@preview/ieee-vgtc:0.0.1": journal
 ```
 
 ## Configuration
 
-The template exports the `tvcg` function with the following named arguments:
+The template exports the `journal` function with the following named arguments:
 
 - `title`: The paper's title.
 - `authors`: An array of authors. For each author you can specify `name` (required), `department`, `organization`, `location`, `email`, and `orcid`. The `orcid` field should contain just the [ORCID identifier](https://orcid.org) of the author.
