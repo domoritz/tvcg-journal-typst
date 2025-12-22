@@ -1,7 +1,7 @@
 $version_line = Select-String -Pattern "^version\s*=" -Path "typst.toml"
 $version = $version_line.Line.Split('"')[1]
 
-$target = "$env:APPDATA\typst\packages\preview\tvcg-journal\"
+$target = "$env:APPDATA\typst\packages\preview\ieee-vgtc\"
 New-Item -ItemType Directory -Force -Path $target | Out-Null
 
 Remove-Item -Path "$target$version" -Force -Recurse -ErrorAction SilentlyContinue
