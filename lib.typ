@@ -6,8 +6,8 @@
 #let mono-font = ("Liberation Mono") // LaTeX uses txtt
 
 // This function gets your whole document as its `body` and formats
-// it as an article in the style of the TVCG.
-#let tvcg(
+// it as a TVCG journal article.
+#let journal(
   // The paper's title.
   title: [Paper Title],
 

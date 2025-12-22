@@ -1,6 +1,6 @@
-#import "@preview/tvcg-journal:0.0.1": tvcg
+#import "@preview/ieee-vgtc:0.0.1": journal
 
-#show: tvcg.with(
+#show: journal.with(
   // Set review: true to enable review mode (hides authors, shows submission info)
   review: false,
   submission-id: 1234,
