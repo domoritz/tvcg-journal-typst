@@ -10,7 +10,11 @@ Use [typship](https://github.com/sjfhsjfh/typship) for local development and tes
 typship dev
 ```
 
-Then run `typst compile template/main.typ --root template/` to compile the template against the development version of the package. If you want to use the released version of the tvcg-journal package, delete the local symlink with `typship clean`.
+Then compile the templates against the development version of the package:
+- Journal: `typst compile template/journal.typ --root template/`
+- Conference: `typst compile template/conference.typ --root template/`
+
+If you want to use the released version of the ieee-vgtc package, delete the local symlink with `typship clean`.
 
 ## Alternative linking
 
@@ -32,11 +36,11 @@ If you don't want to use typship, you can link the current directory as a [Typst
 Run the following commands to create `preview.pdf` and `thumbnail.png`:
 
 ```bash
-typst compile template/main.typ --root template/ preview.pdf
+typst compile template/journal.typ --root template/ preview.pdf
 ```
 
 ```bash
-typst compile -f png --pages 1 --ppi 250 template/main.typ --root template/ thumbnail.png
+typst compile -f png --pages 1 --ppi 250 template/journal.typ --root template/ thumbnail.png
 oxipng -o 4 --strip safe --alpha thumbnail.png
 ```
 
@@ -48,7 +52,7 @@ Run `typst-package-check check` with [typst-package-check](https://github.com/ty
 
 ### Publishing a new version
 
-Bump the version in `typst.toml` and `template/main.typ` and the Readme.
+Bump the version in `typst.toml`, `template/journal.typ`, `template/conference.typ`, and the README.
 
 Then log in with `typship login universe` and run `typship publish universe`.
 

@@ -6,6 +6,248 @@
 #let mono-font = ("Liberation Mono") // LaTeX uses txtt
 
 // This function gets your whole document as its `body` and formats
+// it as a VGTC conference paper.
+#let conference(
+  // The paper's title.
+  title: [Paper Title],
+
+  // An array of authors. For each author you can specify a name,
+  // department, organization, location, and email.
+  // Everything but the name is optional.
+  authors: (),
+
+  // The paper's abstract.
+  abstract: none,
+
+  // Teaser image path and caption
+  teaser: (),
+
+  // A list of index terms to display after the abstract.
+  index-terms: (),
+
+  // The article's paper size. Also affects the margins.
+  paper-size: "us-letter",
+
+  // The result of a call to the `bibliography` function or `none`.
+  bibliography: none,
+
+  // Review mode - hides authors and shows submission info
+  review: false,
+
+  // Submission ID (for review mode)
+  submission-id: 0,
+
+  // Category (for review mode)
+  category: none,
+
+  // Paper type (for review mode)
+  paper-type: none,
+
+  // Custom manuscript note (appears in footer of first page)
+  manuscript-note: none,
+
+  // The paper's content.
+  body
+) = {
+  // Set document metadata.
+  if review {
+    set document(title: title, author: "Anonymous")
+  } else {
+    set document(title: title, author: authors.map(author => author.name))
+  }
+
+  set text(font: serif-font, size: 9pt)
+
+  // Custom small caps with dual sizing (hack for fonts without small caps)
+  // TODO: Remove when Typst implements synthetic small caps: https://github.com/typst/typst/issues/7009
+  let render-smallcaps(body) = {
+    if body.has("text") {
+      for letter in body.text {
+        if letter == upper(letter) {
+          text(size: 9pt, letter)
+        } else {
+          text(size: 7pt, upper(letter))
+        }
+      }
+    } else {
+      smallcaps(body)
+    }
+  }
+
+  // Configure links
+  show link: it => {
+    set text(fill: rgb("#000080"))
+    if type(it.dest) == str {
+      set text(font: mono-font, size: 8pt)
+      it
+    } else {
+      it
+    }
+  }
+
+  // Configure page
+  set page(
+    paper: paper-size,
+    margin: (
+      top: 51pt,
+      bottom: 54pt,
+      left: 54pt,
+      right: 54pt
+    ),
+    header: if review {
+      context {
+        if calc.odd(counter(page).get().first()) {
+          align(center, emph([Online Submission ID: #submission-id]))
+        }
+      }
+    }
+  )
+
+  // Configure equations
+  set math.equation(numbering: "(1)")
+  show math.equation: set block(spacing: 0.65em)
+
+  // Configure references
+  show ref: it => {
+    set text(fill: rgb("#000080"))
+    if it.element != none and it.element.func() == math.equation {
+      link(it.element.location(), numbering(
+        it.element.numbering,
+        ..counter(math.equation).at(it.element.location())
+      ))
+    } else {
+      it
+    }
+  }
+
+  // Configure lists
+  set enum(indent: 10pt, body-indent: 9pt)
+  set list(indent: 10pt, body-indent: 9pt)
+
+  // Configure figures
+  set figure(gap: 10pt)
+  show figure.caption: it => {
+    set text(font: sans-serif-font, size: 8pt)
+    it
+  }
+
+  // Configure headings
+  set heading(numbering: "1.1.1")
+  show heading: set text(font: sans-serif-font, size: 9pt, weight: "bold")
+
+  show heading.where(level: 1): it => {
+    let is-ack = it.body in ([Acknowledgments], [Acknowledgements])
+
+    set par(first-line-indent: 0pt)
+    block(above: 12pt, below: 7.2pt)[
+      #if it.numbering != none and not is-ack {
+        numbering("1", ..counter(heading).get())
+        h(7pt, weak: true)
+      }
+      #render-smallcaps(it.body)
+    ]
+  }
+
+  show heading.where(level: 2): it => {
+    set par(first-line-indent: 0pt)
+    block(above: 12pt, below: 7.2pt, it)
+  }
+
+  show heading.where(level: 3): it => {
+    set par(first-line-indent: 0pt)
+    text(style: "italic", weight: "normal")[
+      #numbering("1.1.1)", ..counter(heading).get())
+      #it.body:
+    ]
+  }
+
+  // Conference-specific: center captions and add spacing below figures
+  show figure.caption: set align(center)
+  show figure: it => {
+    it
+    v(8pt)
+  }
+
+  // Title
+  v(42pt, weak: true)
+  align(center, text(14pt, weight: "bold", title, font: sans-serif-font))
+  v(18pt, weak: true)
+
+  // Authors
+  if review {
+    align(center, text(10pt, font: sans-serif-font, [
+      Category: #category
+      #v(-0.2em)
+      Paper Type: #paper-type
+    ]))
+  } else {
+    set par(leading: 0.4em)
+    align(center)[
+      #grid(
+        columns: authors.len(),
+        gutter: 1.5em,
+        ..authors.map(author => [
+          #text(10pt, font: sans-serif-font)[
+            #author.name
+            #if "orcid" in author and author.orcid != "" {
+              link("https://orcid.org/" + author.orcid)[#box(height: 1.1em, baseline: 13.5%)[#image("assets/orcid.svg")]]
+            }
+            #if "email" in author {
+              footnote[#author.email]
+            }
+          ]\
+          #text(8pt, font: sans-serif-font)[#author.organization]
+        ])
+      )
+    ]
+  }
+
+  v(18pt, weak: true)
+
+  // Teaser
+  if teaser != () {
+    [#figure(
+      teaser.image,
+      caption: teaser.caption,
+    ) <teaser>]
+    v(10pt, weak: true)
+  }
+
+  // Two-column layout
+  show: columns.with(2, gutter: 24pt)
+  set par(justify: true, first-line-indent: 1em, leading: 0.55em, spacing: 0.55em)
+  set text(font: serif-font, size: 9pt)
+
+  // Abstract
+  if abstract != none {
+    heading(level: 1, numbering: none)[Abstract]
+    set par(justify: true)
+    abstract
+
+    if index-terms != () {
+      parbreak()
+      set par(first-line-indent: 0pt)
+      text(weight: "bold")[Index Terms: ]
+      index-terms.join(", ")
+    }
+
+    v(10pt)
+  }
+
+  body
+
+  // Bibliography
+  if bibliography != none {
+    show std-bibliography: set text(8pt)
+    set std-bibliography(
+      title: text(font: sans-serif-font, size: 9pt, weight: "bold")[#render-smallcaps([References])],
+      style: "ieee"
+    )
+    bibliography
+  }
+}
+
+// This function gets your whole document as its `body` and formats
 // it as a TVCG journal article.
 #let journal(
   // The paper's title.
@@ -105,50 +347,43 @@
     }
   )
 
-  // Configure equation numbering and spacing.
+  // Configure equations
   set math.equation(numbering: "(1)")
   show math.equation: set block(spacing: 0.65em)
 
-  // Configure appearance of all references - blue color with special equation handling
+  // Configure references
   show ref: it => {
-    set text(fill: rgb("#000080")) // NavyBlue (SVG color) for all references
+    set text(fill: rgb("#000080"))
     if it.element != none and it.element.func() == math.equation {
-      // Override equation references to show just the number
       link(it.element.location(), numbering(
         it.element.numbering,
         ..counter(math.equation).at(it.element.location())
       ))
     } else {
-      // Other references as usual
       it
     }
   }
 
-  // Configure lists.
+  // Configure lists
   set enum(indent: 10pt, body-indent: 9pt)
   set list(indent: 10pt, body-indent: 9pt)
 
-  // Configure figure captions.
-  // LaTeX uses: \captionsetup{font={scriptsize,sf}} and default \abovecaptionskip (10pt)
-  // scriptsize is approximately 7-8pt, sf is sans-serif
-  set figure(gap: 10pt) // Space between figure and caption (LaTeX default \abovecaptionskip)
+  // Configure figures
+  set figure(gap: 10pt)
   show figure.caption: it => {
     set text(font: sans-serif-font, size: 8pt)
     it
   }
 
-  // Configure headings.
+  // Configure headings
   set heading(numbering: "1.1.1")
-
-  // Global heading styling - sans-serif font, 9pt
   show heading: set text(font: sans-serif-font, size: 9pt, weight: "bold")
 
-  // Level 1: Section headings - left-aligned small caps
-  // LaTeX uses -2ex (≈18pt) before and 0.8ex (≈7.2pt) after
   show heading.where(level: 1): it => {
     let is-ack = it.body in ([Acknowledgments], [Acknowledgements])
 
-    block(above: 18pt, below: 7.2pt)[
+    set par(first-line-indent: 0pt)
+    block(above: 12pt, below: 7.2pt)[
       #if it.numbering != none and not is-ack {
         numbering("1", ..counter(heading).get())
         h(7pt, weak: true)
@@ -157,12 +392,13 @@
     ]
   }
 
-  // Level 2: Subsection headings - bold sans-serif, left-aligned
-  // LaTeX uses -1.8ex (≈16pt) before and 0.8ex (≈7.2pt) after
-  show heading.where(level: 2): set block(above: 16pt, below: 7.2pt)
+  show heading.where(level: 2): it => {
+    set par(first-line-indent: 0pt)
+    block(above: 12pt, below: 7.2pt, it)
+  }
 
-  // Level 3: Sub-subsection headings - italic run-in
   show heading.where(level: 3): it => {
+    set par(first-line-indent: 0pt)
     text(style: "italic", weight: "normal")[
       #numbering("1.1.1)", ..counter(heading).get())
       #it.body:
@@ -232,7 +468,7 @@
   set par(justify: true, first-line-indent: 1em, leading: 0.55em, spacing: 0.65em)
 
 
-  // Display the email address and manuscript info (not shown in review mode).
+  // Footer with author info
   if not review {
     place(left+bottom, float: true, block(
         width: 100%,[
@@ -257,16 +493,12 @@
     )
   }
 
-  // Set the body font.
   set text(font: serif-font, size: 9pt)
 
-  // Display the paper's contents.
   body
 
-  // Display bibliography.
   if bibliography != none {
     show std-bibliography: set text(8pt)
-    // References heading with small caps styling matching section headings
     set std-bibliography(
       title: text(font: sans-serif-font, size: 9pt, weight: "bold")[#render-smallcaps([References])],
       style: "ieee"
